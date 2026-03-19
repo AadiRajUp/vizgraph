@@ -3,7 +3,7 @@ CXXFLAGS = -std=c++17 -Wall
 SFML_FLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
 TARGET = visualizer
-SRCS = main.cpp utils.cpp linegraph.cpp
+SRCS = main.cpp utils.cpp linegraph.cpp piechart.cpp donutchart.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 all: $(TARGET)
