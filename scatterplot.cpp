@@ -1,16 +1,21 @@
-#include "linegraph.hpp"
+#include "scatterplot.hpp"
 #include<cmath>
 //#include<stdio.h>
+
 #include<cstdio>
-void linegraph(sf::Image& canvas,sf::RenderTexture& rt, int* x, int* y,int sampleSize){
+void scatterplot(sf::Image& canvas,sf::RenderTexture& rt, int* x, int* y,int sampleSize){
 // Setting up the screen
 draw_line(canvas,50,50,50,550,sf::Color::Black);//Yaxis line
 draw_line(canvas,50,550,750,550,sf::Color::Black);//xaxis line
 
-sortforlinegraph(x,y,sampleSize);
 
 // various shenanigans to scale accordingly
 float largestX = x[sampleSize-1];
+for(int i =0;i<sampleSize;i++){
+    if (x[i]>largestX){
+        largestX=x[i];
+    }
+}
 float largestY=y[sampleSize-1];
 for(int i =0;i<sampleSize;i++){
     if (y[i]>largestY){
@@ -37,10 +42,6 @@ for ( int i =0;i<sampleSize;i++){
     printf("%d,%d,%f,%f\n",tensX,tensY,px,600-py);
     draw_circle(canvas, px, py, 3, sf::Color::Blue, true);
 }
-// Connecting the dots
-for (int i =0;i<sampleSize-1;i++){
-    draw_line(canvas,(float)x[i]/tensX*700+50,600-(float)y[i]/tensY*500-50,(float)x[i+1]/tensX*700+50,600-(float)y[i+1]/tensY*500-50,sf::Color::Blue);
-}
 // making labels 
 sf::Text labelText(font);
 labelText.setFillColor(sf::Color::Black);
@@ -56,24 +57,5 @@ for (int i =0;i<=10;i++){
     rt.draw(labelText);
 }
 rt.display();
-
-}
-
-
-void sortforlinegraph(int* x,int* y,int sampleSize){
-int tempx;
-int tempy;
-for(int i =0;i<sampleSize-1;i++){
-    for (int j=0;j<sampleSize-1;j++){
-        if (x[j]>x[j+1]){
-            tempx = x[j];
-            x[j]=x[j+1];
-            x[j+1]=tempx;
-            tempy = y[j];
-            y[j] = y[j+1];
-            y[j+1]=tempy;
-        }
-    }
-}
 
 }
