@@ -2,6 +2,8 @@
 #include"linegraph.hpp"
 #include"piechart.hpp"
 #include"donutchart.hpp"
+#include "bargraph.hpp"
+#include "histogram.hpp"
 #include<string>
 #include<cstdio>
 
@@ -19,6 +21,12 @@ int main(){
     int values[] = {30, 50, 20, 45, 15};
     std::string labels[] = {"Alpha","Beta","Gamma","Delta","Epsilon"};
     int sampleSize = sizeof(values)/sizeof(int);
+     
+    // --- histogram data ---
+    int counts[] = {2, 6, 12, 9, 4};
+    std::string binLabels[] = {"0-10","10-20","20-30","30-40","40-50"};
+
+    int histSize = sizeof(counts)/sizeof(int);
 
     int currentChart = 0;
 
@@ -33,6 +41,8 @@ int main(){
         if      (currentChart == 0) linegraph (canvas, tx, x, y, sizeof(x)/sizeof(int));
         else if (currentChart == 1) piechart  (canvas, tx, values, labels, sampleSize);
         else if (currentChart == 2) donutchart(canvas, tx, values, labels, sampleSize);
+        else if (currentChart == 3) bargraph (canvas, tx, values, labels, sampleSize);
+        else if (currentChart == 4) histogram(canvas, tx, counts, binLabels, histSize);
 
         texture.update(canvas);
     };
@@ -49,6 +59,8 @@ int main(){
                 if      (key->code == sf::Keyboard::Key::Num1){ currentChart = 0; redraw(); }
                 else if (key->code == sf::Keyboard::Key::Num2){ currentChart = 1; redraw(); }
                 else if (key->code == sf::Keyboard::Key::Num3){ currentChart = 2; redraw(); }
+                else if (key->code == sf::Keyboard::Key::Num4){ currentChart = 3; redraw(); }
+                else if (key->code == sf::Keyboard::Key::Num5){ currentChart = 4; redraw(); }
             }
         }
 
