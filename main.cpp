@@ -3,6 +3,9 @@
 #include <ctime>
 #include<string>
 #include<cstdio>
+#include<random>
+
+void generateNormalIntData(double mean, int n, int* data);
 
 int main(){
     sf::RenderWindow window(sf::VideoMode({800,600}),"Vizgraph");
@@ -38,11 +41,11 @@ int main(){
                                  "Commercial","Management" ,"Other"};
     int donutSize = sizeof(donutValues) / sizeof(int);
 
-    // histogram data
-    int counts[]            = {3, 12, 28, 42, 35, 19, 8, 3};
-    std::string binLabels[] = {"0-10", "11-20", "21-30", "31-40",
-                               "41-50", "51-60", "61-70", "71-80"};
-    int histSize = sizeof(counts) / sizeof(int);
+    //histogram data
+    int histSamples[10000] ;
+    generateNormalIntData(100, 10000, histSamples);
+    int histSampleSize = sizeof(histSamples)/sizeof(int);
+    int histBins = 10; 
 
     int currentChart = 0;
 
@@ -57,7 +60,7 @@ int main(){
         else if (currentChart == 2) piechart   (canvas, tx, pieValues,   pieLabels,   pieSize);
         else if (currentChart == 3) scatterplot(canvas, tx, Sx, Sy, sizeof(Sx)/sizeof(int));
         else if (currentChart == 4) donutchart (canvas, tx, donutValues, donutLabels, donutSize);
-        else if (currentChart == 5) histogram  (canvas, tx, counts,      binLabels,   histSize);
+        else if (currentChart == 5) histogram(canvas, tx, histSamples, histSampleSize, histBins);
 
         texture.update(canvas);
     };
@@ -84,5 +87,18 @@ int main(){
         window.draw(sprite);
         window.draw(sf::Sprite(tx.getTexture()));
         window.display();
+    }
+}
+void generateNormalIntData(double mean, int n, int* data)
+{
+    double stddev = 10.0;
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::normal_distribution<double> dist(mean, stddev);
+
+    for (int i = 0; i < n; i++)
+    {
+        data[i] = static_cast<int>(dist(gen) + 0.5); // rounding to nearest int
     }
 }
