@@ -6,7 +6,7 @@
 #define M_PI 3.14159265358979323846f
 static const int ARC_STEPS = 120;
 
-// Converts HSL to sf::Color (h: 0-360, s: 0-1, l: 0-1)
+// converts hue , saturation and lightness to rbg
 static sf::Color hslToColor(float h, float s, float l) {
     float c = (1.0f - std::fabs(2.0f * l - 1.0f)) * s;
     float x = c * (1.0f - std::fabs(std::fmod(h / 60.0f, 2.0f) - 1.0f));
