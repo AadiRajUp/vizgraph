@@ -21,6 +21,8 @@ void draw_line(sf::Image& canvas, int x0, int y0, int x1, int y1, sf::Color colo
 }
 
 // Mid-point circle algorithm
+// if the fill is true then it draws a line from one end to other end 
+// if the fill is false then it only draws outline that means it only draws end points 
 void draw_circle(sf::Image& canvas, int cx, int cy, int r, sf::Color color, bool fill) {
     int x = 0, y = r, d = 1 - r;
     while (x <= y) {
@@ -44,6 +46,7 @@ void draw_circle(sf::Image& canvas, int cx, int cy, int r, sf::Color color, bool
 }
 
 //Scan-line rectangle fill
+//similar execution as circle
 void draw_rect(sf::Image& canvas, int x, int y, int w, int h, sf::Color color, bool fill) {
     if (fill) {
         for (int row = y; row <= y + h; row++) draw_line(canvas, x, row, x+w, row, color);
@@ -55,7 +58,9 @@ void draw_rect(sf::Image& canvas, int x, int y, int w, int h, sf::Color color, b
     }
 }
 
-// Scan-line polygon fill: intersect each scanline with edges, fill between pairs
+// Scan-line polygon fill
+//first finds the maximm and minimum points and then loop through them and then check if they intersect 
+//if they intersect the stores the value of x in xs loop through xs and then create a line in between
 void scanline_fill_polygon(sf::Image& canvas, const std::vector<sf::Vector2f>& verts, sf::Color color) {
     if (verts.size() < 3) return;
     int imgW = (int)canvas.getSize().x, imgH = (int)canvas.getSize().y, n = (int)verts.size();
@@ -66,7 +71,7 @@ void scanline_fill_polygon(sf::Image& canvas, const std::vector<sf::Vector2f>& v
 
     for (int y = yMin; y <= yMax; y++) {
         float fy = (float)y + 0.5f;
-        std::vector<float> xs;
+        std::vector<float> xs; 
         for (int i = 0; i < n; i++) {
             const sf::Vector2f& a = verts[i], &b = verts[(i+1) % n];
             if (a.y == b.y) continue;
